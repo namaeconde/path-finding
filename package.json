@@ -1,0 +1,27 @@
+{
+  "name": "path-finding",
+  "version": "1.0.0",
+  "description": "Path Finding visualizer",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/namaeconde/path-finding.git"
+  },
+  "keywords": [
+    "path-finding"
+  ],
+  "author": "Namae Conde",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/namaeconde/path-finding/issues"
+  },
+  "homepage": "https://github.com/namaeconde/path-finding#readme",
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  }
+}
