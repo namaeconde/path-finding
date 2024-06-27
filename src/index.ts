@@ -19,18 +19,17 @@ const findShortestPath = (graph: Record<string, Record<string, number>>, start: 
     if (distances[closestNeighbor] === Infinity) break;
 
     visited.add(closestNeighbor);
+    if (closestNeighbor === target) break;
 
     for (let neighbor in graph[closestNeighbor]) {
       if (visited.has(neighbor)) continue;
       const newDistance = distances[closestNeighbor] + graph[closestNeighbor][neighbor];
-      if (newDistance < distances[neighbor]) {
-        distances[neighbor] = newDistance;
-      }
+      distances[neighbor] = Math.min(newDistance, distances[neighbor]);
     }
 
   }
 
-  return distances;
+  return visited;
 };
 
 const main = () => {
@@ -41,7 +40,9 @@ const main = () => {
     E: { C: 5 },
     C: { }
   }
-  console.log(findShortestPath(graph, 'A', 'E'));
+  const start = 'A', target = 'E';
+  const path = findShortestPath(graph, start, target);
+  console.log(path);
 };
 
 main();
