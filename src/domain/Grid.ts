@@ -1,6 +1,6 @@
-import { Node } from "./Node";
+import Node from './Node';
 
-export class Grid {
+export default class Grid {
   nodes: Node[][] = [];
   visitedNodesInOrder: Node[] = [];
 
@@ -82,6 +82,7 @@ export class Grid {
       this.sortNodesByDistance(unvisitedNodes);
       const closestNode = unvisitedNodes.shift();
 
+      if (!closestNode) break;
       if (closestNode.isWall) continue;
       if (closestNode.distance === Infinity) return this.getNodesInShortestPathOrder(end);
       closestNode.isVisited = true;
