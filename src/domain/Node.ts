@@ -12,4 +12,12 @@ export default class Node {
     this.row = row
     this.col = col
   }
+
+  markAsStart(): void {
+    this.isStart = true;
+  }
+
+  markAsEnd(): void {
+    this.isEnd = true;
+  }
 }

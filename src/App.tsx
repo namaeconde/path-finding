@@ -1,43 +1,84 @@
 import React, { useState, useEffect } from 'react';
 import Grid from './domain/Grid';
+import Node from './domain/Node';
 import './App.css';
 import GridComponent from './component/grid/Grid.component'
 
 function App() {
   const [grid, setGrid] = useState<Grid>();
   const [mouseIsPressed, setMouseIsPressed] = useState(false);
+  const [disableButton, setDisableButton] = useState(true);
+  const [startNode, setStartNode] = useState<Node>(null);
+  const [endNode, setEndNode] = useState<Node>(null);
   const [hasStartNode, setHasStartNode] = useState(false);
-  const [hasEndNode, setHasEndNote] = useState(false);
+  const [hasEndNode, setHasEndNode] = useState(false);
 
   useEffect(() => {
     setGrid(new Grid(10, 10));
   }, []);
 
   const handleMouseDown = (row: number, col: number) => {
-    console.log("handleMouseDown");
-    console.log(row, col);
+    if (!hasStartNode && !hasEndNode) {
+      const startNode = grid.setStartNode(row, col);
+      setStartNode(startNode);
+      setHasStartNode(true);
+    } else if (hasStartNode && !hasEndNode) {
+      const endNode = grid.setEndNode(row, col);
+      setEndNode(endNode);
+      setHasEndNode(true);
+      setDisableButton(false);
+    }
   };
 
   const handleMouseEnter = (row: number, col: number) => {
     if (!mouseIsPressed) return;
-    console.log("handleMouseEnter");
-    console.log(row, col);
   };
 
   const handleMouseUp = () => {
     setMouseIsPressed(false);
   };
 
-  const visualizeDijkstra = () => {}
+  const animateShortestPath = (nodesInShortestPathOrder: Node[]) => {
+    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+      setTimeout(() => {
+        const node = nodesInShortestPathOrder[i];
+        document.getElementById(`node-${node.row}-${node.col}`).className =
+          'node node-shortest-path';
+      }, 50 * i);
+    }
+  };
+
+  const animateDijkstra = (visitedNodesInOrder: Node[], nodesInShortestPathOrder: Node[]) => {
+    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+      setTimeout(() => {
+        const node = visitedNodesInOrder[i];
+        document.getElementById(`node-${node.row}-${node.col}`).className =
+          'node node-visited';
+      }, 10 * i);
+
+      if (visitedNodesInOrder[i].isEnd) {
+        setTimeout(() => {
+          animateShortestPath(nodesInShortestPathOrder);
+        }, 10 * i);
+        return;
+      }
+    }
+  };
+
+  const visualizeDijkstra = () => {
+    const nodesInShortestPathOrder = grid.findShortestPath(startNode, endNode);
+    animateDijkstra(grid.visitedNodesInOrder, nodesInShortestPathOrder);
+  }
 
   return (
     <div style={{
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      flexDirection: "column"
+      flexDirection: "column",
+      margin: 24
     }}>
-      <button onClick={() => visualizeDijkstra()}>Visualize Dijkstra's Algorithm</button>
+      <button disabled={disableButton} onClick={() => visualizeDijkstra()}>Visualize Dijkstra's Algorithm</button>
       { grid && 
         <GridComponent
           nodes={grid.nodes}

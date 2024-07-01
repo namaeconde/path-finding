@@ -15,6 +15,16 @@ export default class Grid {
     }
   }
 
+  setStartNode(row: number, col: number): Node {
+    this.nodes[row][col].markAsStart();
+    return this.nodes[row][col];
+  }
+
+  setEndNode(row: number, col: number): Node {
+    this.nodes[row][col].markAsEnd();
+    return this.nodes[row][col];
+  }
+
   getAllNodes(): Node[] {
     return this.nodes.flat();
   }
@@ -62,7 +72,7 @@ export default class Grid {
   getNodesInShortestPathOrder(endNode: Node) {
     const nodesInShortestPathOrder = [];
     let currentNode = endNode;
-    while (currentNode !== null) {
+    while (currentNode) {
       nodesInShortestPathOrder.unshift(currentNode);
       currentNode = currentNode.previousNode;
     }
@@ -87,7 +97,9 @@ export default class Grid {
       if (closestNode.distance === Infinity) return this.getNodesInShortestPathOrder(end);
       closestNode.isVisited = true;
       this.visitedNodesInOrder.push(closestNode);
-      if (closestNode === end) return this.getNodesInShortestPathOrder(end);
+      if (closestNode === end) {
+        return this.getNodesInShortestPathOrder(end)
+      };
       this.updateUnvisitedNeighbors(closestNode);
     }
   }
