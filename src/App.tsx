@@ -14,7 +14,7 @@ function App() {
   const [hasEndNode, setHasEndNode] = useState(false);
 
   useEffect(() => {
-    setGrid(new Grid(10, 10));
+    setGrid(new Grid(100, 100));
   }, []);
 
   const handleMouseDown = (row: number, col: number) => {
@@ -38,17 +38,7 @@ function App() {
     setMouseIsPressed(false);
   };
 
-  const animateShortestPath = (nodesInShortestPathOrder: Node[]) => {
-    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
-      setTimeout(() => {
-        const node = nodesInShortestPathOrder[i];
-        document.getElementById(`node-${node.row}-${node.col}`).className =
-          'node node-shortest-path';
-      }, 50 * i);
-    }
-  };
-
-  const animateDijkstra = (visitedNodesInOrder: Node[], nodesInShortestPathOrder: Node[]) => {
+  const animateResults = (visitedNodesInOrder: Node[], nodesInShortestPathOrder: Node[]) => {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       setTimeout(() => {
         const node = visitedNodesInOrder[i];
@@ -58,16 +48,22 @@ function App() {
 
       if (visitedNodesInOrder[i].isEnd) {
         setTimeout(() => {
-          animateShortestPath(nodesInShortestPathOrder);
+          for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+            setTimeout(() => {
+              const node = nodesInShortestPathOrder[i];
+              document.getElementById(`node-${node.row}-${node.col}`).className =
+                'node node-shortest-path';
+            }, 50 * i);
+          }
         }, 10 * i);
         return;
       }
     }
   };
 
-  const visualizeDijkstra = () => {
+  const findShortestPath = () => {
     const nodesInShortestPathOrder = grid.findShortestPath(startNode, endNode);
-    animateDijkstra(grid.visitedNodesInOrder, nodesInShortestPathOrder);
+    animateResults(grid.visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
   return (
@@ -78,7 +74,7 @@ function App() {
       flexDirection: "column",
       margin: 24
     }}>
-      <button disabled={disableButton} onClick={() => visualizeDijkstra()}>Visualize Dijkstra's Algorithm</button>
+      <button disabled={disableButton} onClick={() => findShortestPath()}>Find Shortest Path</button>
       { grid && 
         <GridComponent
           nodes={grid.nodes}

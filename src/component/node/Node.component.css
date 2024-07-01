@@ -1,25 +1,25 @@
 .node {
   width: 25px;
   height: 25px;
+  border: 1px solid rgb(175, 216, 248);
   background-color: white;
-  border: 1px solid black;
   display: inline-block;
 }
 
 .node-start {
-  background-color: green;
+  background-color: rgb(175, 248, 181)
 }
 
 .node-end {
-  background-color: red;
+  background-color: rgb(248, 175, 175);
 }
 
 .node-visited {
-  background-color: lightblue;
+  background-color: rgb(175, 176, 248);
 }
 
 .node-shortest-path {
-  background-color: yellow;
+  background-color: rgb(248, 237, 175)
 }
 
 .node-wall {
