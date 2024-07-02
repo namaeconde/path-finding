@@ -85,7 +85,7 @@ export default class Grid {
    * @param {Node} end - The end node of the path.
    * @returns {Array} An array of nodes representing the shortest path. 
    */
-  findShortestPath(start: Node, end: Node) {
+  dijkstra(start: Node, end: Node) {
     start.distance = 0;
     const unvisitedNodes = this.getAllNodes();
     while(unvisitedNodes.length) {

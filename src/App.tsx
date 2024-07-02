@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Grid from './domain/Grid';
 import Node from './domain/Node';
 import './App.css';
-import GridComponent from './component/grid/Grid.component'
+import GridComponent, { animateShortestPath } from './component/grid/Grid.component'
 
 function App() {
   const [grid, setGrid] = useState<Grid>();
@@ -38,32 +38,9 @@ function App() {
     setMouseIsPressed(false);
   };
 
-  const animateResults = (visitedNodesInOrder: Node[], nodesInShortestPathOrder: Node[]) => {
-    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
-      setTimeout(() => {
-        const node = visitedNodesInOrder[i];
-        document.getElementById(`node-${node.row}-${node.col}`).className =
-          'node node-visited';
-      }, 10 * i);
-
-      if (visitedNodesInOrder[i].isEnd) {
-        setTimeout(() => {
-          for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
-            setTimeout(() => {
-              const node = nodesInShortestPathOrder[i];
-              document.getElementById(`node-${node.row}-${node.col}`).className =
-                'node node-shortest-path';
-            }, 50 * i);
-          }
-        }, 10 * i);
-        return;
-      }
-    }
-  };
-
   const findShortestPath = () => {
-    const nodesInShortestPathOrder = grid.findShortestPath(startNode, endNode);
-    animateResults(grid.visitedNodesInOrder, nodesInShortestPathOrder);
+    const nodesInShortestPathOrder = grid.dijkstra(startNode, endNode);
+    animateShortestPath(grid.visitedNodesInOrder, nodesInShortestPathOrder);
   }
 
   return (
@@ -77,7 +54,7 @@ function App() {
       <button disabled={disableButton} onClick={() => findShortestPath()}>Find Shortest Path</button>
       { grid && 
         <GridComponent
-          nodes={grid.nodes}
+          grid={grid}
           onMouseDown={(row, col) => handleMouseDown(row, col)}
           onMouseEnter={(row, col) => handleMouseEnter(row, col)}
           onMouseUp={() => handleMouseUp()}
