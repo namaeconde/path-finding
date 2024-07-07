@@ -2,10 +2,10 @@ export default class Node {
   row: number;
   col: number;
   distance = Infinity;
-  isStart = false;
-  isEnd = false;
-  isVisited = false;
-  isWall = false;
+  private isStart = false;
+  private isEnd = false;
+  private isVisited = false;
+  private isWall = false;
   previousNode: Node | undefined;
 
   constructor(row: number, col: number) {
@@ -17,7 +17,31 @@ export default class Node {
     this.isStart = true;
   }
 
+  isStartNode(): boolean {
+    return this.isStart;
+  }
+
   markAsEnd(): void {
     this.isEnd = true;
+  }
+
+  isEndNode(): boolean {
+    return this.isEnd;
+  }
+
+  markAsWall(): void {
+    this.isWall = true;
+  }
+
+  isWallNode(): boolean {
+    return this.isWall;
+  }
+
+  markAsVisited(): void {
+    this.isVisited = true;
+  }
+
+  wasVisited(): boolean {
+    return this.isVisited;
   }
 }

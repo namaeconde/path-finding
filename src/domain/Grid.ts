@@ -57,7 +57,7 @@ export default class Grid {
    * @param {Node} node - The current node being evaluated.
    */
   updateUnvisitedNeighbors(node: Node) {
-    const unvisitedNeighbors = this.getNeighbors(node).filter((neighbor) => !neighbor.isVisited);
+    const unvisitedNeighbors = this.getNeighbors(node).filter((neighbor) => !neighbor.wasVisited());
     for (const neighbor of unvisitedNeighbors) {
       neighbor.distance = node.distance + 1;
       neighbor.previousNode = node;
@@ -93,9 +93,9 @@ export default class Grid {
       const closestNode = unvisitedNodes.shift();
 
       if (!closestNode) break;
-      if (closestNode.isWall) continue;
+      if (closestNode.isWallNode()) continue;
       if (closestNode.distance === Infinity) return this.getNodesInShortestPathOrder(end);
-      closestNode.isVisited = true;
+      closestNode.markAsVisited();
       this.visitedNodesInOrder.push(closestNode);
       if (closestNode === end) {
         return this.getNodesInShortestPathOrder(end)

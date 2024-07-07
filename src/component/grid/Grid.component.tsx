@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import Grid from '../../domain/Grid';
 import Node from '../../domain/Node';
 import NodeComponent from '../node/Node.component';
@@ -47,7 +47,7 @@ const animateShortestPath = (visitedNodesInOrder: Node[], nodesInShortestPathOrd
         'node node-visited';
     }, 10 * i);
 
-    if (visitedNodesInOrder[i].isEnd) {
+    if (visitedNodesInOrder[i].isEndNode()) {
       setTimeout(() => {
         for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
           setTimeout(() => {

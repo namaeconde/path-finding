@@ -1,5 +1,4 @@
 import Node from '@domain/Node';
-import React from 'react';
 import './Node.component.css';
 
 interface NodeComponentProps {
@@ -11,14 +10,16 @@ interface NodeComponentProps {
 }
 
 const NodeComponent = ({ id, node, onMouseDown, onMouseEnter, onMouseUp }: NodeComponentProps) => {
-  const { isStart, isEnd, isWall, isVisited, row, col } = node;
+  const { row, col } = node;
 
-  const extraClassName = isStart
+  if (node.wasVisited()) {
+    console.log('visited', id);
+  }
+
+  const extraClassName = node.isStartNode()
     ? 'node-start'
-    : isEnd
+    : node.isEndNode()
     ? 'node-end'
-    : isWall
-    ? 'node-wall'
     : '';
 
   return (
