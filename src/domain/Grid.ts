@@ -38,30 +38,30 @@ export default class Grid {
   }
 
   /**
-   * Updates the distances of unvisited neighbors of a node.
-   * @param {Node} node - The current node being evaluated.
-   */
-  updateUnvisitedNeighbors(node: Node) {
-    const unvisitedNeighbors = this.getUnvisitedNeighbors(node);
-    for (const neighbor of unvisitedNeighbors) {
-      neighbor.distance = node.distance + 1;
-      neighbor.previousNode = node;
-    }
-  }
-
-  /**
-   * Gets the unvisited neighbors of a node.
+   * Gets the surrounding neighbors of a node.
    * @param {Node} node - The node whose neighbors are being checked.
    * @returns {Array} An array of unvisited neighboring nodes.
    */
-  getUnvisitedNeighbors(node: Node) {
+  getNeighbors(node: Node) {
     const neighbors = [];
     const { row, col } = node;
     if (row > 0) neighbors.push(this.nodes[row - 1][col]);
     if (row < this.nodes.length - 1) neighbors.push(this.nodes[row + 1][col]);
     if (col > 0) neighbors.push(this.nodes[row][col - 1]);
     if (col < this.nodes[0].length - 1) neighbors.push(this.nodes[row][col + 1]);
-    return neighbors.filter((neighbor) => !neighbor.isVisited);
+    return neighbors
+  }
+
+  /**
+   * Updates the distances of unvisited neighbors of a node.
+   * @param {Node} node - The current node being evaluated.
+   */
+  updateUnvisitedNeighbors(node: Node) {
+    const unvisitedNeighbors = this.getNeighbors(node).filter((neighbor) => !neighbor.isVisited);
+    for (const neighbor of unvisitedNeighbors) {
+      neighbor.distance = node.distance + 1;
+      neighbor.previousNode = node;
+    }
   }
 
   /**
