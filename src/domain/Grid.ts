@@ -95,7 +95,7 @@ export default class Grid {
       if (!closestNode) break;
       if (closestNode.isWallNode()) continue;
       if (closestNode.distance === Infinity) return this.getNodesInShortestPathOrder(end);
-      closestNode.markAsVisited(++this.visitedNodesCount);
+      this.nodes[closestNode.row][closestNode.col].markAsVisited(++this.visitedNodesCount);
       if (closestNode === end) {
         return this.getNodesInShortestPathOrder(end)
       };

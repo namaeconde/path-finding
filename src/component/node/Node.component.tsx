@@ -1,3 +1,4 @@
+import React, { useRef } from "react";
 import Node from '@domain/Node';
 import './Node.component.css';
 
@@ -10,6 +11,7 @@ interface NodeComponentProps {
 
 const NodeComponent = ({ node, onMouseDown, onMouseEnter, onMouseUp }: NodeComponentProps) => {
   const { row, col } = node;
+  const nodeRef = useRef(null);
 
   const extraClassName = node.isStartNode()
   ? 'node-start'
@@ -19,12 +21,13 @@ const NodeComponent = ({ node, onMouseDown, onMouseEnter, onMouseUp }: NodeCompo
 
   if (node.wasVisited()) {
     setTimeout(() => {
-      document.getElementById(`node-${row}-${col}`).className = "node node-visited";
+      nodeRef.current.className = "node node-visited";
     }, node.getVisitOrderNumber() * 10);
   }
 
   return (
     <div
+      ref={el => { nodeRef.current = el; }}
       id={`node-${row}-${col}`}
       className={`node ${extraClassName}`}
       onMouseDown={() => onMouseDown(row, col)}

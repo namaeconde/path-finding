@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Grid from '../../domain/Grid';
-import Node from '../../domain/Node';
+import Node from '@domain/Node';
 import NodeComponent from '../node/Node.component';
 import './Grid.component.css';
 
