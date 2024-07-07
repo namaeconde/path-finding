@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Grid from './domain/Grid';
 import Node from './domain/Node';
 import './App.css';
-import GridComponent, { animateShortestPath } from './component/grid/Grid.component'
+import GridComponent from './component/grid/Grid.component'
 
 function App() {
   const [grid, setGrid] = useState<Grid>();
@@ -12,6 +12,7 @@ function App() {
   const [endNode, setEndNode] = useState<Node>(null);
   const [hasStartNode, setHasStartNode] = useState(false);
   const [hasEndNode, setHasEndNode] = useState(false);
+  const [shortestPath, setShortestPath] = useState<Node[]>(null);
 
   useEffect(() => {
     setGrid(new Grid(100, 100));
@@ -39,8 +40,8 @@ function App() {
   };
 
   const findShortestPath = () => {
-    const nodesInShortestPathOrder = grid.dijkstra(startNode, endNode);
-    animateShortestPath(grid.visitedNodesInOrder, nodesInShortestPathOrder);
+    const shortestPath = grid.findShortestPathUsingDjikstra(startNode, endNode);
+    setShortestPath(shortestPath);
   }
 
   return (
@@ -55,6 +56,7 @@ function App() {
       { grid && 
         <GridComponent
           grid={grid}
+          shortestPath={shortestPath}
           onMouseDown={(row, col) => handleMouseDown(row, col)}
           onMouseEnter={(row, col) => handleMouseEnter(row, col)}
           onMouseUp={() => handleMouseUp()}

@@ -3,13 +3,14 @@ import React from 'react';
 import './Node.component.css';
 
 interface NodeComponentProps {
+  id: string;
   node: Node,
   onMouseDown: (row: number, col: number) => void;
   onMouseEnter: (row: number, col: number) => void;
   onMouseUp: () => void;
 }
 
-const NodeComponent = ({ node, onMouseDown, onMouseEnter, onMouseUp }: NodeComponentProps) => {
+const NodeComponent = ({ id, node, onMouseDown, onMouseEnter, onMouseUp }: NodeComponentProps) => {
   const { isStart, isEnd, isWall, isVisited, row, col } = node;
 
   const extraClassName = isStart
@@ -18,13 +19,11 @@ const NodeComponent = ({ node, onMouseDown, onMouseEnter, onMouseUp }: NodeCompo
     ? 'node-end'
     : isWall
     ? 'node-wall'
-    : isVisited
-    ? 'node-visited'
     : '';
 
   return (
     <div
-      id={`node-${row}-${col}`}
+      id={id}
       className={`node ${extraClassName}`}
       onMouseDown={() => onMouseDown(row, col)}
       onMouseEnter={() => onMouseEnter(row, col)}

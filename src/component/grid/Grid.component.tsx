@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import Grid from '../../domain/Grid';
 import Node from '../../domain/Node';
 import NodeComponent from '../node/Node.component';
@@ -5,19 +6,27 @@ import './Grid.component.css';
 
 interface GridComponentProps {
   grid: Grid;
+  shortestPath?: Node[];
   onMouseDown: (row: number, col: number) => void;
   onMouseEnter: (row: number, col: number) => void;
   onMouseUp: () => void;
 }
 
-const GridComponent = ({ grid, onMouseDown, onMouseEnter, onMouseUp }: GridComponentProps) => {
+const GridComponent = ({ grid, shortestPath, onMouseDown, onMouseEnter, onMouseUp }: GridComponentProps) => {
+  useEffect(() => {
+    if (shortestPath?.length > 0) {
+      animateShortestPath(grid.visitedNodesInOrder, shortestPath);
+    }
+  }, [shortestPath]);
+
   return (
     <div className="grid">
       {grid.nodes.map((row, rowIdx) => (
         <div key={rowIdx} className="row">
           {row.map((node, nodeIdx) => (
             <NodeComponent
-              key={nodeIdx}
+              key={`node-${rowIdx}-${nodeIdx}`}
+              id={`node-${rowIdx}-${nodeIdx}`}
               node={node}
               onMouseDown={() => onMouseDown(node.row, node.col)}
               onMouseEnter={() => onMouseEnter(node.row, node.col)}
@@ -30,7 +39,7 @@ const GridComponent = ({ grid, onMouseDown, onMouseEnter, onMouseUp }: GridCompo
   );
 };
 
-export const animateShortestPath = (visitedNodesInOrder: Node[], nodesInShortestPathOrder: Node[]) => {
+const animateShortestPath = (visitedNodesInOrder: Node[], nodesInShortestPathOrder: Node[]) => {
   for (let i = 0; i <= visitedNodesInOrder.length; i++) {
     setTimeout(() => {
       const node = visitedNodesInOrder[i];
