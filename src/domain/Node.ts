@@ -6,6 +6,7 @@ export default class Node {
   private isEnd = false;
   private isVisited = false;
   private isWall = false;
+  private visitOrderNumber = 0;
   previousNode: Node | undefined;
 
   constructor(row: number, col: number) {
@@ -37,11 +38,16 @@ export default class Node {
     return this.isWall;
   }
 
-  markAsVisited(): void {
+  markAsVisited(visitOrderNumber?: number): void {
     this.isVisited = true;
+    this.visitOrderNumber = visitOrderNumber
   }
 
   wasVisited(): boolean {
     return this.isVisited;
+  }
+
+  getVisitOrderNumber(): number {
+    return this.visitOrderNumber;
   }
 }

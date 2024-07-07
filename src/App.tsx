@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Grid from './domain/Grid';
-import Node from './domain/Node';
+import Node from '@domain/Node';
 import './App.css';
 import GridComponent from './component/grid/Grid.component'
 
@@ -42,6 +42,7 @@ function App() {
   const findShortestPath = () => {
     const shortestPath = grid.findShortestPathUsingDjikstra(startNode, endNode);
     setShortestPath(shortestPath);
+    setDisableButton(true);
   }
 
   return (

@@ -2,7 +2,7 @@ import Node from './Node';
 
 export default class Grid {
   nodes: Node[][] = [];
-  visitedNodesInOrder: Node[] = [];
+  visitedNodesCount: number = 0;
 
   constructor(rows: number, cols: number) {
     for (let row = 0; row < rows; row++) {
@@ -95,8 +95,7 @@ export default class Grid {
       if (!closestNode) break;
       if (closestNode.isWallNode()) continue;
       if (closestNode.distance === Infinity) return this.getNodesInShortestPathOrder(end);
-      closestNode.markAsVisited();
-      this.visitedNodesInOrder.push(closestNode);
+      closestNode.markAsVisited(++this.visitedNodesCount);
       if (closestNode === end) {
         return this.getNodesInShortestPathOrder(end)
       };
