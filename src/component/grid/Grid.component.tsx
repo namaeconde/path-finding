@@ -8,7 +8,7 @@ interface GridComponentProps {
   grid: Grid;
   shortestPath?: Node[];
   onMouseDown: (row: number, col: number) => void;
-  onMouseEnter: (row: number, col: number) => void;
+  onMouseEnter: () => void;
   onMouseUp: () => void;
 }
 
@@ -28,7 +28,7 @@ const GridComponent = ({ grid, shortestPath, onMouseDown, onMouseEnter, onMouseU
               key={`node-${rowIdx}-${nodeIdx}`}
               node={node}
               onMouseDown={() => onMouseDown(node.row, node.col)}
-              onMouseEnter={() => onMouseEnter(node.row, node.col)}
+              onMouseEnter={() => onMouseEnter()}
               onMouseUp={() => onMouseUp()}
             />
           ))}

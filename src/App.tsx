@@ -31,7 +31,7 @@ function App() {
     }
   };
 
-  const handleMouseEnter = (row: number, col: number) => {
+  const handleMouseEnter = () => {
     if (!mouseIsPressed) return;
   };
 
@@ -59,7 +59,7 @@ function App() {
           grid={grid}
           shortestPath={shortestPath}
           onMouseDown={(row, col) => handleMouseDown(row, col)}
-          onMouseEnter={(row, col) => handleMouseEnter(row, col)}
+          onMouseEnter={() => handleMouseEnter()}
           onMouseUp={() => handleMouseUp()}
         />
       }
