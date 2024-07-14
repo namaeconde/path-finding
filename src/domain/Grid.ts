@@ -3,6 +3,7 @@ import Node from './Node';
 export default class Grid {
   nodes: Node[][] = [];
   visitedNodesCount: number = 0;
+  searchAlgorithms: Record<string, any>;
 
   constructor(rows: number, cols: number) {
     for (let row = 0; row < rows; row++) {
@@ -12,6 +13,11 @@ export default class Grid {
         currentRow.push(newNode);
       }
       this.nodes.push(currentRow);
+    }
+
+    this.searchAlgorithms = { 
+      djikstra: (start: Node, end: Node) => { return this.findShortestPathUsingDjikstra(start, end) },
+      bfs: (start: Node, end: Node) => { return this.findShortestPathUsingBFS(start, end) }
     }
   }
 
@@ -55,6 +61,7 @@ export default class Grid {
   /**
    * Updates the distances of unvisited neighbors of a node.
    * @param {Node} node - The current node being evaluated.
+   * @returns {Array} An array of unvisited neighbors that have been updated.
    */
   updateUnvisitedNeighbors(node: Node) {
     const unvisitedNeighbors = this.getNeighbors(node).filter((neighbor) => !neighbor.wasVisited());
@@ -62,6 +69,7 @@ export default class Grid {
       neighbor.distance = node.distance + 1;
       neighbor.previousNode = node;
     }
+    return unvisitedNeighbors;
   }
 
   /**
@@ -99,5 +107,35 @@ export default class Grid {
       this.nodes[closestNode.row][closestNode.col].markAsVisited(++this.visitedNodesCount);
       this.updateUnvisitedNeighbors(closestNode);
     }
+    return null;
+  }
+
+  /**
+   * Finds the shortest path between the start and end using BFS algorithm
+   * @param start
+   * @param end 
+   */
+  findShortestPathUsingBFS(start: Node, end: Node) {
+    const queue = [start];
+    start.distance = 0;
+
+    while (queue.length) {
+      const currentNode = queue.shift();
+
+      if (!currentNode) break;
+      if (currentNode.isWallNode()) continue;
+      if (currentNode.distance === Infinity) return this.getNodesInShortestPathOrder(end);
+      if (currentNode === end) return this.getNodesInShortestPathOrder(end);
+      this.nodes[currentNode.row][currentNode.col].markAsVisited(++this.visitedNodesCount);
+      const neighbors = this.updateUnvisitedNeighbors(currentNode);
+
+      // push neighbor in queue if not yet added in queue
+      for (const neighbor of neighbors) {
+        const isInQueue = queue.some((node) => node.row === neighbor.row && node.col === neighbor.col)
+        if (isInQueue) continue;
+        queue.push(neighbor);
+      }
+    }
+    return null;
   }
 }

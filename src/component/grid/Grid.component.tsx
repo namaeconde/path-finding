@@ -16,6 +16,7 @@ const GridComponent = ({ grid, shortestPath, onMouseDown, onMouseEnter, onMouseU
   useEffect(() => {
     if (shortestPath?.length > 0) {
       animateShortestPath(grid.visitedNodesCount, shortestPath);
+      grid.visitedNodesCount = 0;
     }
   }, [shortestPath]);
 
@@ -45,9 +46,9 @@ const animateShortestPath = (visitedNodesCount: number, nodesInShortestPathOrder
         const node = nodesInShortestPathOrder[i];
         document.getElementById(`node-${node.row}-${node.col}`).className =
           'node node-shortest-path';
-      }, 50 * i);
+      }, i * 50);
     }
-  }, 10 * visitedNodesCount);
+  }, visitedNodesCount * 50);
 };
 
 export default GridComponent;

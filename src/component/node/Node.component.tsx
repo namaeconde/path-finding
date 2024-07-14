@@ -22,7 +22,7 @@ const NodeComponent = ({ node, onMouseDown, onMouseEnter, onMouseUp }: NodeCompo
   if (node.wasVisited()) {
     setTimeout(() => {
       nodeRef.current.className = "node node-visited";
-    }, node.getVisitOrderNumber() * 10);
+    }, node.getVisitOrderNumber() * 50);
   }
 
   return (
