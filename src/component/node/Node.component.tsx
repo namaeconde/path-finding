@@ -19,7 +19,7 @@ const NodeComponent = ({ node, onMouseDown, onMouseEnter, onMouseUp }: NodeCompo
   ? 'node-end'
   : '';
 
-  if (node.wasVisited()) {
+  if (node.wasVisited() && !(node.isStartNode() || node.isEndNode())) {
     setTimeout(() => {
       nodeRef.current.className = "node node-visited";
     }, node.getVisitOrderNumber() * 50);
